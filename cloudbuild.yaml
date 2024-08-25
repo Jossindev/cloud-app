@@ -10,15 +10,24 @@ steps:
         gradle build
     id: gradle-build
 
-  # Step 2: Build the Docker image
+  # Step 2: Build the Docker image and tag it
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/spring-cloud-app-344441/my-docker-repo/spring-boot-app:$SHORT_SHA', '.']
+    args: [
+      'build',
+      '-t',
+      'us-central1-docker.pkg.dev/spring-cloud-app-344441/my-docker-repo/spring-boot-app:$SHORT_SHA',
+      '.'
+    ]
     waitFor: ['gradle-build']
+    id: docker-build
 
   # Step 3: Push the Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/spring-cloud-app-344441/my-docker-repo/spring-boot-app:$SHORT_SHA']
-    waitFor: ['gradle-build']
+    args: [
+      'push',
+      'us-central1-docker.pkg.dev/spring-cloud-app-344441/my-docker-repo/spring-boot-app:$SHORT_SHA'
+    ]
+    waitFor: ['docker-build']
 
 images:
   - 'us-central1-docker.pkg.dev/spring-cloud-app-344441/my-docker-repo/spring-boot-app:$SHORT_SHA'
