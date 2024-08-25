@@ -2,20 +2,23 @@ logsBucket: gs://bucket--docker-images-loh333678
 
 steps:
   # Step 1: Build the JAR file using Gradle
-  - name: 'gradle:7.3.3-jdk17'  # This Gradle image has JDK 17
+  - name: 'gradle:7.6-jdk17'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
         gradle build
+    id: gradle-build
 
   # Step 2: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'us-central1-docker.pkg.dev/spring-cloud-app-344441/my-docker-repo/spring-boot-app:$SHORT_SHA', '.']
+    waitFor: ['gradle-build']
 
   # Step 3: Push the Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/spring-cloud-app-344441/my-docker-repo/spring-boot-app:$SHORT_SHA']
+    waitFor: ['gradle-build']
 
 images:
   - 'us-central1-docker.pkg.dev/spring-cloud-app-344441/my-docker-repo/spring-boot-app:$SHORT_SHA'
