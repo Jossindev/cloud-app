@@ -1,6 +1,3 @@
-options:
-  logging: CLOUD_LOGGING_ONLY
-
 logsBucket: gs://bucket--docker-images-loh333678
 
 steps:
