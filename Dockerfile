@@ -4,11 +4,11 @@ FROM openjdk:17-jdk-slim
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the JAR file from the build/libs directory to the container
-COPY build/libs/*.jar app.jar
+# Copy the JAR file from the build output directory to the container
+COPY build/libs/*.jar /app/app.jar
 
-# Expose the port your Spring Boot app runs on
+# Expose the application port
 EXPOSE 8080
 
-# Run the Spring Boot application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Command to run the application
+ENTRYPOINT ["sh", "-c", "java -jar /app/*.jar"]
