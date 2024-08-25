@@ -2,11 +2,12 @@ logsBucket: gs://bucket--docker-images-loh333678
 
 steps:
   # Step 1: Build the JAR file using Gradle
-  - name: 'gcr.io/cloud-builders/gradle'
-    args: ['build']
-    env:
-      - _JAVA_OPTIONS=-Xmx512m
-    id: gradle-build
+  - name: 'gradle:7.3.3-jdk17'  # This Gradle image has JDK 17
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gradle build
 
   # Step 2: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
