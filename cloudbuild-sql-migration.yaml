@@ -2,14 +2,14 @@ logsBucket: gs://bucket--docker-images-loh333678
 
 steps:
   # Step 1: Pull the DB_PASSWORD secret from Google Secret Manager
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        # Retrieve the DB_PASSWORD from Secret Manager
-        DB_PASSWORD=$(gcloud secrets versions access latest --secret="db-password")
-        echo $DB_PASSWORD > /workspace/db_password.txt
+#  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+#    entrypoint: 'bash'
+#    args:
+#      - '-c'
+#      - |
+#        # Retrieve the DB_PASSWORD from Secret Manager
+#        DB_PASSWORD=$(gcloud secrets versions access latest --secret="db-password")
+#        echo $DB_PASSWORD > /workspace/db_password.txt
 
   # Step 2: Run the Flyway migration using the Flyway Docker image
   - name: 'flyway/flyway:latest'
@@ -17,11 +17,10 @@ steps:
     args:
       - '-c'
       - |
-        DB_PASSWORD=$(cat /workspace/db_password.txt)
         flyway migrate \
           -url="jdbc:mysql://104.154.253.146:3306/cloud-app-db" \
           -user="myUser" \
-          -password="${DB_PASSWORD}"
+          -password="1111"
 
 # Permissions and settings
 timeout: 1200s
