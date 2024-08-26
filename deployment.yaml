@@ -19,3 +19,21 @@ spec:
           image: us-central1-docker.pkg.dev/spring-cloud-app-344441/my-docker-repo/spring-boot-app:$SHORT_SHA
           ports:
             - containerPort: 8080
+          volumeMounts:
+            - name: secrets-store-inline
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-password-secret
+                  key: password
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "gcp-secret"
+
