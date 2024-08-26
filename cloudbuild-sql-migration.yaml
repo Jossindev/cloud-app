@@ -1,0 +1,17 @@
+steps:
+  # Step 1: Pull the Flyway Docker image
+  - name: 'flyway/flyway:latest'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        DB_PASSWORD=$(gcloud secrets versions access latest --secret="db-password")
+        
+        # Run Flyway migration command
+        flyway -url="jdbc:mysql://104.154.253.146:3306/cloud-app-db" \
+               -user="myUser" \
+               -password="${DB_PASSWORD}" \
+               migrate
+
+# Permissions and settings
+timeout: 1200s

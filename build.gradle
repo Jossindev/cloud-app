@@ -42,7 +42,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     implementation 'mysql:mysql-connector-java:8.0.32'
-
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-mysql'
 
     // Cloud SQL Socket Factory for PostgreSQL
     implementation 'com.google.cloud.sql:postgres-socket-factory:1.5.0'
